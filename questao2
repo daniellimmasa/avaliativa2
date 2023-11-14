@@ -1,0 +1,65 @@
+#include <stdio.h>
+
+struct Assalariado {
+    char sexo;
+    float salario;
+};
+char validacaoSexo() {
+    char sexo;
+    do {
+        printf("Informe o sexo (M para masculino, F para feminino): ");
+        scanf(" %c", &sexo);
+    } while (sexo != 'M' && sexo != 'F');
+    return sexo;
+}
+float validacaoSalario() {
+    float salario;
+    do {
+        printf("informe o salario (minimo maior que 1): ");
+        scanf("%f", &salario);
+    } while (salario <= 1);
+    return salario;
+}
+char* classificaSalario(float salario) {
+    if (salario > 1400) {
+        return "acima";
+    } else if (salario == 1400) {
+        return "igual";
+    } else {
+        return "abaixo";
+    }
+}
+void mostraClassificacao(struct Assalariado assalariado) {
+    printf("sexo: %s\n", (assalariado.sexo == 'M' ? "masculino" : "feminino"));
+    printf("salario: R$%.2f\n", assalariado.salario);
+    printf("classificacao em relacao ao salario minimo: %s\n", classificaSalario(assalariado.salario));
+    printf("------------------------\n");
+}
+int main() {
+    int numAssalariados;
+    int abaixoDoSalarioMinimo = 0;
+    int acimaDoSalarioMinimo = 0;
+
+    printf("coloque o numero de assalariados: ");
+    scanf("%d", &numAssalariados);
+
+    struct Assalariado assalariados[numAssalariados];
+
+    for (int i = 0; i < numAssalariados; i++) {
+        assalariados[i].sexo = validacaoSexo();
+        assalariados[i].salario = validacaoSalario();
+
+        if (assalariados[i].salario < 1400) {
+            abaixoDoSalarioMinimo++;
+        } else if (assalariados[i].salario > 1400) {
+            acimaDoSalarioMinimo++;
+        }
+    }
+    for (int i = 0; i < numAssalariados; i++) {
+        mostraClassificacao(assalariados[i]);
+    }
+    printf("\nquantidade de assalariados abaixo do salário mínimo: %d\n", abaixoDoSalarioMinimo);
+    printf("quantidade de assalariados acima do salário mínimo: %d\n", acimaDoSalarioMinimo);
+
+    return 0;
+}
